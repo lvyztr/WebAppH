@@ -1,0 +1,11 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=User manual.chm
+Contents file=Update details.hhc
+Display compile progress=No
+Index file=Index.hhk
+Language=0x1c09 English (South Africa)
+
+
+[INFOTYPES]
+

@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AlumniConnectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AlumniConnect.dbo.Admins' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Admins">
+          <Key>
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="Password" />
+          </Key>
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'AlumniConnect.dbo.AlumniDetails' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="AlumniDetails">
+          <Property Name="Cellphone" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="50" />
+          <Property Name="Country" Type="varchar" MaxLength="50" />
+          <Property Name="HighSchool" Type="varchar" MaxLength="50" />
+          <Property Name="MatricYear" Type="varchar" MaxLength="50" />
+          <Property Name="University" Type="varchar" MaxLength="50" />
+          <Property Name="Degree" Type="varchar" MaxLength="50" />
+          <Property Name="StudyField" Type="varchar" MaxLength="50" />
+          <Property Name="GraduationYear" Type="varchar" MaxLength="50" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="50" />
+          <Property Name="Position" Type="varchar" MaxLength="50" />
+        </EntityType>-->
+        <EntityType Name="AlumniRegistration">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nchar" MaxLength="10" />
+          <Property Name="Firstname" Type="varchar" MaxLength="50" />
+          <Property Name="Lastname" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="roleid" Type="int" />
+        </EntityType>
+        <EntityType Name="tblroles">
+          <Key>
+            <PropertyRef Name="roleid" />
+          </Key>
+          <Property Name="roleid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rolename" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_AlumniRegistration_tblroles1">
+          <End Role="tblroles" Type="Self.tblroles" Multiplicity="0..1" />
+          <End Role="AlumniRegistration" Type="Self.AlumniRegistration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblroles">
+              <PropertyRef Name="roleid" />
+            </Principal>
+            <Dependent Role="AlumniRegistration">
+              <PropertyRef Name="roleid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AlumniConnectModelStoreContainer">
+          <EntitySet Name="AlumniRegistration" EntityType="Self.AlumniRegistration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblroles" EntityType="Self.tblroles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Admins" EntityType="Self.Admins" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Admins].[UserName] AS [UserName], 
+    [Admins].[Password] AS [Password]
+    FROM [dbo].[Admins] AS [Admins]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_AlumniRegistration_tblroles1" Association="Self.FK_AlumniRegistration_tblroles1">
+            <End Role="tblroles" EntitySet="tblroles" />
+            <End Role="AlumniRegistration" EntitySet="AlumniRegistration" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AlumniConnectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AlumniRegistration">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="roleid" Type="Int32" />
+          <NavigationProperty Name="tblrole" Relationship="Self.FK_AlumniRegistration_tblroles1" FromRole="AlumniRegistration" ToRole="tblroles" />
+        </EntityType>
+        <EntityType Name="tblrole">
+          <Key>
+            <PropertyRef Name="roleid" />
+          </Key>
+          <Property Name="roleid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rolename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AlumniRegistrations" Relationship="Self.FK_AlumniRegistration_tblroles1" FromRole="tblroles" ToRole="AlumniRegistration" />
+        </EntityType>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="Password" />
+          </Key>
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AlumniRegistration_tblroles1">
+          <End Role="tblroles" Type="Self.tblrole" Multiplicity="0..1" />
+          <End Role="AlumniRegistration" Type="Self.AlumniRegistration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblroles">
+              <PropertyRef Name="roleid" />
+            </Principal>
+            <Dependent Role="AlumniRegistration">
+              <PropertyRef Name="roleid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AlumniConnectEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AlumniRegistrations" EntityType="Self.AlumniRegistration" />
+          <EntitySet Name="tblroles" EntityType="Self.tblrole" />
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
+          <AssociationSet Name="FK_AlumniRegistration_tblroles1" Association="Self.FK_AlumniRegistration_tblroles1">
+            <End Role="tblroles" EntitySet="tblroles" />
+            <End Role="AlumniRegistration" EntitySet="AlumniRegistrations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AlumniConnectModelStoreContainer" CdmEntityContainer="AlumniConnectEntities1">
+          <EntitySetMapping Name="AlumniRegistrations">
+            <EntityTypeMapping TypeName="AlumniConnectModel.AlumniRegistration">
+              <MappingFragment StoreEntitySet="AlumniRegistration">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="roleid" ColumnName="roleid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblroles">
+            <EntityTypeMapping TypeName="AlumniConnectModel.tblrole">
+              <MappingFragment StoreEntitySet="tblroles">
+                <ScalarProperty Name="roleid" ColumnName="roleid" />
+                <ScalarProperty Name="rolename" ColumnName="rolename" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="AlumniConnectModel.Admin">
+              <MappingFragment StoreEntitySet="Admins">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
